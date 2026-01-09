@@ -1,0 +1,163 @@
+/* GLOBAL */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 950px;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------- LEFT PANEL ---------------- */
+.left-panel {
+    width: 40%;
+    background: #0c6c3c;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.left-back {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: white;
+    color: #0c6c3c;
+    font-size: 20px;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid white;
+    margin-bottom: 15px;
+}
+
+.left-panel h2 {
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+.left-panel p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ---------------- RIGHT PANEL ---------------- */
+.right-panel {
+    width: 60%;
+    padding: 40px;
+    position: relative;
+}
+
+.right-back {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #0c6c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.form-container {
+    margin-top: 30px;
+}
+
+/* Title */
+h3 {
+    font-size: 26px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* PROFILE PHOTO */
+.profile-photo {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.circle {
+    width: 120px;
+    height: 120px;
+    margin: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #0c6c3c;
+}
+
+.circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(35px);
+    background: #0c6c3c;
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* INPUTS */
+form input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    font-size: 14px;
+}
+
+/* Two items side-by-side */
+.row {
+    display: flex;
+    gap: 12px;
+}
+
+/* BUTTON */
+.next-btn {
+    width: 100%;
+    background: #0c6c3c;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.next-btn:hover {
+    background: #0a5a30;
+}

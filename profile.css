@@ -1,0 +1,258 @@
+/* -----------------------------
+   GLOBAL STYLES
+------------------------------ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f6f8f7;
+    color: #2b2b2b;
+}
+
+/* -----------------------------
+   GREEN HEADER
+------------------------------ */
+.top-header {
+    background: #1e8d3d;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.uni-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.header-text h2 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.header-text p {
+    font-size: 14px;
+    opacity: 0.85;
+    margin-top: 3px;
+}
+
+/* -----------------------------
+   LAYOUT
+------------------------------ */
+.layout {
+    display: flex;
+    height: calc(100vh - 100px);
+}
+
+/* -----------------------------
+   SIDEBAR
+------------------------------ */
+.sidebar {
+    width: 230px;
+    background: #f1f3f2;
+    padding: 25px 15px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.back-btn {
+    font-size: 28px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: #1e8d3d;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    color: #145e25;
+}
+
+.profile-pic {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: white;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* -----------------------------
+   MENU BUTTONS
+------------------------------ */
+.menu-btn {
+    width: 100%;
+    padding: 12px 15px;
+    background: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    transition: 0.2s ease;
+}
+
+.menu-btn:hover {
+    background: #e0e3e2;
+}
+
+.menu-btn.active {
+    background: #1e8d3d;
+    color: white;
+}
+
+.menu-btn.logout {
+    background: #d9534f;
+    color: white;
+}
+
+.menu-btn.logout:hover {
+    background: #c9302c;
+}
+
+/* -----------------------------
+   CONTENT AREA
+------------------------------ */
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
+}
+
+/* -----------------------------
+   PAGES
+------------------------------ */
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
+}
+
+/* -----------------------------
+   FORM GRID
+------------------------------ */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 12px 20px;
+    width: 80%;
+    margin-top: 20px;
+}
+
+.form-grid label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9fafb;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-grid input:focus,
+.form-grid select:focus,
+.form-grid textarea:focus {
+    border-color: #1e8d3d;
+    box-shadow: 0 0 6px rgba(30,141,61,0.2);
+    outline: none;
+}
+
+/* -----------------------------
+   BUTTONS
+------------------------------ */
+.update-btn {
+    margin-top: 25px;
+    padding: 12px 25px;
+    background: #1e8d3d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.update-btn:hover {
+    background: #145e25;
+    transform: translateY(-2px);
+}
+
+/* -----------------------------
+   TABLE STYLES
+------------------------------ */
+.log-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.log-table th,
+.log-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.log-table thead {
+    background: #e0f0e0;
+}
+
+.log-table tbody tr:hover {
+    background: #f3faf4;
+}
+
+/* -----------------------------
+   RESPONSIVE
+------------------------------ */
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 15px 10px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .update-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
