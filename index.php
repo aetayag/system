@@ -2,67 +2,124 @@
 session_start();
 require 'db.php';
 
-// Create mysqli connection from db.php credentials
 if (!isset($conn)) {
     $conn = new mysqli($host ?? 'localhost', $username ?? 'root', $password ?? '', $dbname ?? 'hr');
-    if ($conn->connect_error) {
-        die('Connection failed: ' . $conn->connect_error);
-    }
+    if ($conn->connect_error) die('Connection failed: ' . $conn->connect_error);
 }
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['username'] ?? '');
+    $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    if (empty($email) || empty($password)) {
+    if (empty($username) || empty($password)) {
         $error = "Please fill in both fields!";
     } else {
-        $stmt = $conn->prepare("
-            SELECT id, password, employee_select, employee_type
-            FROM file_201
-            WHERE email = ?
-        ");
-        $stmt->bind_param("s", $email);
+
+    // --- Check Finance admin ---
+$stmt_fin = $conn->prepare("SELECT id, password FROM finance_admin WHERE office_name = ?");
+$stmt_fin->bind_param("s", $username);
+$stmt_fin->execute();
+$result_fin = $stmt_fin->get_result();
+
+if ($result_fin && $result_fin->num_rows === 1) {
+    $row_fin = $result_fin->fetch_assoc();
+
+    // plain text password (same as your table)
+    if ($password === $row_fin['password']) {
+        $_SESSION['user_id'] = $row_fin['id'];
+        $_SESSION['role'] = 'Finance';
+        $_SESSION['office'] = 'Finance';
+
+        header("Location: finance/finance.php"); // finance dashboard
+        exit();
+    } else {
+        $error = "Incorrect password!";
+    }
+}
+$stmt_fin->close();
+
+
+        // --- Check HR admin ---
+        $stmt = $conn->prepare("SELECT id, password FROM hr_admin WHERE office_name = ?");
+        $stmt->bind_param("s", $username);
         $stmt->execute();
-        $stmt->store_result();
+        $result = $stmt->get_result();
 
-        if ($stmt->num_rows === 1) {
-            $stmt->bind_result($id, $hashed_password, $employee_select, $employee_type);
-            $stmt->fetch();
-
-            if ($hashed_password && password_verify($password, $hashed_password)) {
-                // Save session
-                $_SESSION['user_id'] = $id;
-                $_SESSION['email'] = $email;
-                $_SESSION['employee_select'] = trim($employee_select ?? '');
-                $_SESSION['employee_type']   = trim($employee_type ?? '');
-
-                // 🔀 Redirect Logic
-                if ($_SESSION['employee_select'] === 'Non-Teaching') {
-                    header("Location: nonteaching/non-teaching.php");
-                } elseif ($_SESSION['employee_type'] === 'Full-Time') {
-                    header("Location: fulltime/fulltime_dash.php");
-                } elseif ($_SESSION['employee_type'] === 'Part-Time') {
-                    header("Location: parttime/part_time.php");
-                } else {
-                    $error = "Unknown role or type!";
-                }
+        if ($result && $result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            if ($password === $row['password']) {
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['role'] = 'HRadmin';
+                header("Location: hr/HR.php");
                 exit();
             } else {
                 $error = "Incorrect password!";
             }
+
         } else {
-            $error = "User not found!";
+            // --- Check department users ---
+            $stmt_dept = $conn->prepare("SELECT id, password, dept_name FROM department WHERE dept_name = ?");
+            $stmt_dept->bind_param("s", $username);
+            $stmt_dept->execute();
+            $result_dept = $stmt_dept->get_result();
+
+            if ($result_dept && $result_dept->num_rows === 1) {
+                $row_dept = $result_dept->fetch_assoc();
+                if ($password === $row_dept['password']) { // plain text
+                    $_SESSION['user_id'] = $row_dept['id'];
+                    $_SESSION['role'] = 'Department';
+                    $_SESSION['dept_name'] = $row_dept['dept_name'];
+                    header("Location: department/college_dashboard.php"); // change this to your dept dashboard
+                    exit();
+                } else {
+                    $error = "Incorrect password!";
+                }
+
+            } else {
+                // --- Check regular employees ---
+                $stmt_emp = $conn->prepare("SELECT id, password, employee_select, employee_type FROM file_201 WHERE email = ?");
+                $stmt_emp->bind_param("s", $username);
+                $stmt_emp->execute();
+                $result_emp = $stmt_emp->get_result();
+
+                if ($result_emp && $result_emp->num_rows === 1) {
+                    $row_emp = $result_emp->fetch_assoc();
+                    if (password_verify($password, $row_emp['password'])) {
+                        $_SESSION['user_id'] = $row_emp['id'];
+                        $_SESSION['email'] = $username;
+                        $_SESSION['employee_select'] = trim($row_emp['employee_select'] ?? '');
+                        $_SESSION['employee_type'] = trim($row_emp['employee_type'] ?? '');
+
+                        if ($_SESSION['employee_select'] === 'Non-Teaching') {
+                            header("Location: nonteaching/non-teaching.php");
+                        } elseif ($_SESSION['employee_type'] === 'Full-Time') {
+                            header("Location: fulltime/fulltime_dash.php");
+                        } elseif ($_SESSION['employee_type'] === 'Part-Time') {
+                            header("Location: parttime/part_time.php");
+                        } else {
+                            $error = "Unknown role or type!";
+                        }
+                        exit();
+                    } else {
+                        $error = "Incorrect password!";
+                    }
+                } else {
+                    $error = "User not found!";
+                }
+                $stmt_emp->close();
+            }
+            $stmt_dept->close();
         }
         $stmt->close();
     }
 }
-if (isset($conn)) {
-    $conn->close();
-}
+
+$conn->close();
 ?>
+
+
 
 
 <!DOCTYPE html>
